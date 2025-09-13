@@ -19,12 +19,12 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
-  // ignore: non_constant_identifier_names
+  
   bool favourite_filled = false;
 
   List<String> category = ["Hottest", "Popular", "New combos", "Top"];
 
-  // ignore: non_constant_identifier_names
+  
   int cateegory_selected = 0;
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:mostafa_e_commerce/core/colors.dart';
 import 'package:mostafa_e_commerce/core/styles.dart';
 import 'package:mostafa_e_commerce/core/routes.dart';
+import 'package:mostafa_e_commerce/features/home/homescreen.dart';
 
 class Welcomscreen extends StatelessWidget {
   const Welcomscreen({super.key});
@@ -53,7 +54,11 @@ class Welcomscreen extends StatelessWidget {
                   onpressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MyRoutes().to_home(context),
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return Homescreen();
+                        },
+                      ),
                     );
                   },
                 ),
@@ -89,3 +94,30 @@ class Mainbuttom extends StatelessWidget {
     );
   }
 }
+
+
+
+
+class MainbuttomEmpty extends StatelessWidget {
+  final Function() onpressed;
+  final String title;
+
+  const MainbuttomEmpty({super.key, required this.onpressed, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 56,
+      width: double.infinity,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),border: BoxBorder.all(color: Mycolors().orange)),
+      child: ElevatedButton(
+        onPressed: onpressed,
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(double.infinity, double.infinity),
+        ),
+        child: Text(title, style: Mystyles().o14_400().copyWith(fontSize: 24 , fontWeight: FontWeight.w500)),
+      ),
+    );
+  }
+}
+

@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:mostafa_e_commerce/core/colors.dart';
 import 'package:mostafa_e_commerce/core/routes.dart';
 import 'package:mostafa_e_commerce/core/styles.dart';
+import 'package:mostafa_e_commerce/features/basket/basketscreen.dart';
 import 'package:mostafa_e_commerce/features/home/homedata.dart';
 import 'package:mostafa_e_commerce/features/welcome/welcomescreen.dart';
 
@@ -118,7 +119,14 @@ class _DetailsscreenState extends State<Detailsscreen> {
                           onpressed: () {
                             Navigator.push(
                               context,
-                              MyRoutes().to_basket(context),
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return Basketscreen(
+                                    productdetails2:widget.productdetails ,
+                                    number_of_products: number,
+                                  );
+                                },
+                              ),
                             );
                           },
                           title: "Go to basket",
