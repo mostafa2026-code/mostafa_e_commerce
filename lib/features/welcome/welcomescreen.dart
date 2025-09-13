@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mostafa_e_commerce/core/colors.dart';
 import 'package:mostafa_e_commerce/core/styles.dart';
-import 'package:mostafa_e_commerce/core/routes.dart';
 import 'package:mostafa_e_commerce/features/home/homescreen.dart';
 
 class Welcomscreen extends StatelessWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mostafa_e_commerce/core/styles.dart';
+import 'package:mostafa_e_commerce/features/details/detailsscreen.dart';
 import 'package:mostafa_e_commerce/features/home/homedata.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:intl/intl.dart';
@@ -19,12 +20,9 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
-  
-  bool favourite_filled = false;
-
   List<String> category = ["Hottest", "Popular", "New combos", "Top"];
 
-  
+  // ignore: non_constant_identifier_names
   int cateegory_selected = 0;
   @override
   Widget build(BuildContext context) {
@@ -53,6 +51,7 @@ class _HomescreenState extends State<Homescreen> {
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -61,7 +60,7 @@ class _HomescreenState extends State<Homescreen> {
               ],
             ),
             Text("combo do you want today?", style: Mystyles().b20_500()),
-
+            Gap(24),
             Row(
               children: [
                 Expanded(
@@ -80,71 +79,13 @@ class _HomescreenState extends State<Homescreen> {
                 ),
               ],
             ),
-            Expanded(
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: products.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return Gap(23);
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  Product p1 = products[index];
-                  return Container(
-                    decoration: BoxDecoration(),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(p1.imageUrl),
-                              Text(p1.name, style: Mystyles().b16_500()),
-                              Row(
-                                children: [
-                                  Text(
-                                    formatCurrency.format(p1.price),
-                                    style: Mystyles().g16_400().copyWith(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  Gap(38),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: Mycolors().orange,
-                                      size: 24,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        Positioned(
-                          top: 16,
-                          right: 16,
-                          child: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                favourite_filled = !favourite_filled;
-                              });
-                            },
-                            icon: favourite_filled
-                                ? Icon(Icons.favorite)
-                                : Icon(Icons.favorite_border_outlined),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
+            Gap(40),
+            Text("Recommended Combo", style: Mystyles().b24_500()),
+            Gap(24),
+            Expanded(child: Listview()),
             Gap(48),
             Row(
-              children: List.generate(products.length, (int index) {
+              children: List.generate(category.length, (int index) {
                 return TextButton(
                   onPressed: () {
                     setState(() {
@@ -163,62 +104,113 @@ class _HomescreenState extends State<Homescreen> {
                 );
               }),
             ),
-            Expanded(
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: products.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return Gap(23);
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  Product p2 = products[index];
-                  return Container(
-                    height: 150,
-                    width: 140,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: colors[index],
-                    ),
-                    child: Card(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.favorite_border_outlined),
-                          ),
-                          Center(
-                            child: Image.asset(
-                              p2.imageUrl,
-                              height: 64,
-                              width: 64,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(p2.imageUrl, style: Mystyles().b16_500()),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                p2.price.toString(),
-                                style: Mystyles().o14_400(),
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.add, color: Mycolors().orange),
-                              ),
-                            ],
-                          ),
-                        ],
+            Expanded(child: Listview()),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Listview extends StatelessWidget {
+  const Listview({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      scrollDirection: Axis.horizontal,
+      itemCount: products.length,
+      separatorBuilder: (BuildContext context, int index) {
+        return Gap(23);
+      },
+      itemBuilder: (BuildContext context, int index) {
+        Product p1 = products[index];
+        return Listviewcontainer(
+          p1: p1,
+        );
+      },
+    );
+  }
+}
+
+class Listviewcontainer extends StatefulWidget {
+  final Product  p1;
+
+  const Listviewcontainer({super.key, required this.p1});
+
+  @override
+  State<Listviewcontainer> createState() => _ListviewcontainerState();
+}
+
+class _ListviewcontainerState extends State<Listviewcontainer> {
+  // ignore: non_constant_identifier_names
+  bool favourite_filled = false;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Detailsscreen(productdetails: widget.p1);
+            },
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Mycolors().white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              spreadRadius: 2,
+              blurRadius: 8,
+              offset: Offset(4, 4),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(widget.p1.imageUrl),
+                  Text(widget.p1.name, style: Mystyles().b16_500()),
+                  Row(
+                    children: [
+                      Text(
+                        formatCurrency.format(widget.p1.price),
+                        style: Mystyles().g16_400().copyWith(fontSize: 14),
                       ),
-                    ),
-                  );
+                      Gap(38),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.add,
+                          color: Mycolors().orange,
+                          size: 24,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              top: 16,
+              right: 16,
+              child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    favourite_filled = !favourite_filled;
+                  });
                 },
+                icon: favourite_filled
+                    ? Icon(Icons.favorite)
+                    : Icon(Icons.favorite_border_outlined),
               ),
             ),
           ],

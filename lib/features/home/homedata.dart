@@ -3,6 +3,7 @@ class Product {
   final int price;
   final List<String>? contents;
   final String imageUrl;
+  
 
   Product({
     required this.name,
