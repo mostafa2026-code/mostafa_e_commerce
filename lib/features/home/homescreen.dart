@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mostafa_e_commerce/core/styles.dart';
+import 'package:mostafa_e_commerce/features/basket/basketscreen.dart';
 import 'package:mostafa_e_commerce/features/details/detailsscreen.dart';
 import 'package:mostafa_e_commerce/features/home/homedata.dart';
+import 'package:mostafa_e_commerce/features/locationtracker/locationtracker.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:mostafa_e_commerce/core/colors.dart';
@@ -28,11 +30,29 @@ class _HomescreenState extends State<Homescreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
+        surfaceTintColor: Colors.transparent,
+        backgroundColor: Colors.white,
+
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: Icon(Icons.menu),
+            );
+          },
+        ),
         actions: [
           Column(
             children: [
               GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Basketscreen()),
+                  );
+                },
                 child: SvgPicture.asset(
                   "assets/images/Vector.svg",
                   height: 24,
@@ -50,64 +70,111 @@ class _HomescreenState extends State<Homescreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text("Hello name ,", style: Mystyles().b20_400()),
-                Text("What fruit salad", style: Mystyles().b20_500()),
-              ],
-            ),
-            Text("combo do you want today?", style: Mystyles().b20_500()),
-            Gap(24),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      prefix: Icon(Icons.search),
-                      hintText: "Search for fruit salad combos",
+        child: SingleChildScrollView(
+          reverse: true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text("Hello name ,", style: Mystyles().b20_400()),
+                  Text("What fruit salad", style: Mystyles().b20_500()),
+                ],
+              ),
+              Text("combo do you want today?", style: Mystyles().b20_500()),
+              Gap(24),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        prefix: Icon(Icons.search),
+                        hintText: "Search for fruit salad combos",
+                      ),
                     ),
                   ),
-                ),
-                Gap(16),
-                SvgPicture.asset(
-                  "assets/images/Group.svg",
-                  height: 17,
-                  width: 26,
-                ),
-              ],
-            ),
-            Gap(40),
-            Text("Recommended Combo", style: Mystyles().b24_500()),
-            Gap(24),
-            Expanded(child: Listview()),
-            Gap(48),
-            Row(
-              children: List.generate(category.length, (int index) {
-                return TextButton(
-                  onPressed: () {
-                    setState(() {
-                      cateegory_selected = index;
-                    });
-                  },
-                  child: Text(
-                    category[index],
-                    style: cateegory_selected == index
-                        ? Mystyles().b24_500().copyWith(
-                            decoration: TextDecoration.underline,
-                            decorationColor: Mycolors().orange,
-                          )
-                        : Mystyles().g16_500(),
+                  Gap(16),
+                  SvgPicture.asset(
+                    "assets/images/Group.svg",
+                    height: 17,
+                    width: 26,
                   ),
-                );
-              }),
+                ],
+              ),
+              Gap(40),
+              Text("Recommended Combo", style: Mystyles().b24_500()),
+              Gap(24),
+              SizedBox(height: 250, child: Listview()),
+              Gap(48),
+              Row(
+                children: List.generate(category.length, (int index) {
+                  return TextButton(
+                    onPressed: () {
+                      setState(() {
+                        cateegory_selected = index;
+                      });
+                    },
+                    child: Text(
+                      category[index],
+                      style: cateegory_selected == index
+                          ? Mystyles().b24_500().copyWith(
+                              decoration: TextDecoration.underline,
+                              decorationColor: Mycolors().orange,
+                            )
+                          : Mystyles().g16_500(),
+                    ),
+                  );
+                }),
+              ),
+              SizedBox(height: 250, child: Listview()),
+            ],
+          ),
+        ),
+      ),
+      drawer: Drawer(
+
+        backgroundColor: Mycolors().white,
+        child: Column(
+          
+          children: [
+            Gap(100),
+            listtileindrawer(
+              title: "My basket",
+              icon: Icons.shopping_bag_outlined,
+              to: Basketscreen(),
             ),
-            Expanded(child: Listview()),
+            listtileindrawer(
+              title: "track your order",
+              icon: Icons.spatial_tracking_outlined,
+              to: OrderTrackingScreen(),
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+// ignore: camel_case_types
+class listtileindrawer extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Widget to;
+  const listtileindrawer({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.to,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Center(child: Text(title)),
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => to));
+      },
     );
   }
 }
@@ -125,16 +192,14 @@ class Listview extends StatelessWidget {
       },
       itemBuilder: (BuildContext context, int index) {
         Product p1 = products[index];
-        return Listviewcontainer(
-          p1: p1,
-        );
+        return Listviewcontainer(p1: p1);
       },
     );
   }
 }
 
 class Listviewcontainer extends StatefulWidget {
-  final Product  p1;
+  final Product p1;
 
   const Listviewcontainer({super.key, required this.p1});
 
@@ -209,8 +274,8 @@ class _ListviewcontainerState extends State<Listviewcontainer> {
                   });
                 },
                 icon: favourite_filled
-                    ? Icon(Icons.favorite)
-                    : Icon(Icons.favorite_border_outlined),
+                    ? Icon(Icons.favorite, color: Colors.red)
+                    : Icon(Icons.favorite_border_outlined, color: Colors.red),
               ),
             ),
           ],

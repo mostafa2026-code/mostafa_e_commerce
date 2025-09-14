@@ -105,17 +105,15 @@ class MainbuttomEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 56,
-      width: double.infinity,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),border: BoxBorder.all(color: Mycolors().orange)),
-      child: ElevatedButton(
-        onPressed: onpressed,
-        style: ElevatedButton.styleFrom(
-          minimumSize: Size(double.infinity, double.infinity),
-        ),
-        child: Text(title, style: Mystyles().o14_400().copyWith(fontSize: 24 , fontWeight: FontWeight.w500)),
+    return ElevatedButton(
+      onPressed: onpressed,
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(double.infinity, 56,),
+        backgroundColor: Colors.white,
+        side: BorderSide( color: Mycolors().orange)
+        
       ),
+      child: Text(title, style: Mystyles().o14_400().copyWith(fontSize: 24 , fontWeight: FontWeight.w500)),
     );
   }
 }

@@ -1,6 +1,6 @@
-
 import 'package:hive/hive.dart';
 part 'basketmodel.g.dart';
+
 @HiveType(typeId: 0)
 class Basketmodel {
   @HiveField(1)
@@ -14,9 +14,16 @@ class Basketmodel {
   @HiveField(5)
   // ignore: non_constant_identifier_names
   final double total_price;
+  @HiveField(6)
+  bool ?loved=false;
 
   // ignore: non_constant_identifier_names
-  Basketmodel({required this.name, required this.id, required this.image, required this.pecknumber, required this.total_price});
-  
-
+  Basketmodel({
+    required this.name,
+    required this.id,
+    required this.image,
+    required this.pecknumber,
+    required this.total_price,
+    this.loved
+  });
 }

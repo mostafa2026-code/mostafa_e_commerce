@@ -52,33 +52,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
                   Positioned(
                     top: 20,
                     left: 24,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => Homescreen()),
-                          (route) => false,
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Mycolors().white,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(Icons.arrow_back_ios),
-                            Text(
-                              "Go Back",
-                              style: Mystyles().b16_500().copyWith(
-                                color: Mycolors().black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    child: goback(to: Homescreen()),
                   ),
                 ],
               ),
@@ -189,10 +163,13 @@ class _DetailsscreenState extends State<Detailsscreen> {
                         Expanded(
                           child: Mainbuttom(
                             onpressed: () async {
-                              double totalPrice =
+                              
+                              if (number > 0) {
+                                double totalPrice =
                                   number.toDouble() *
                                   widget.productdetails.price;
-                              String id = DateTime.now().millisecondsSinceEpoch.toString();
+                              String id = DateTime.now().millisecondsSinceEpoch
+                                  .toString();
                               await Hiveservice.addtobasket(
                                 id,
                                 Basketmodel(
@@ -201,17 +178,29 @@ class _DetailsscreenState extends State<Detailsscreen> {
                                   image: widget.productdetails.imageUrl,
                                   pecknumber: number,
                                   total_price: totalPrice,
+                                  loved: favourite_details
                                 ),
                               );
-                              Navigator.push(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return Basketscreen();
-                                  },
-                                ),
-                              );
+                                Navigator.push(
+                                  // ignore: use_build_context_synchronously
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return Basketscreen();
+                                    },
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Center(child: Text("you can't order zero pack")),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 2),
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: EdgeInsets.symmetric(horizontal: 24 , vertical: 400),
+                                  ),
+                                );
+                              }
                             },
                             title: "Go to basket",
                           ),
@@ -221,6 +210,41 @@ class _DetailsscreenState extends State<Detailsscreen> {
                   ],
                 ),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ignore: camel_case_types
+class goback extends StatelessWidget {
+  final Widget to;
+  const goback({super.key, required this.to});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => to),
+          (route) => false,
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: Mycolors().white,
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.arrow_back_ios),
+            Text(
+              "Go Back",
+              style: Mystyles().b16_500().copyWith(color: Mycolors().black),
             ),
           ],
         ),

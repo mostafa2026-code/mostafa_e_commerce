@@ -6,8 +6,10 @@ class Hiveservice {
   static late Box basketbox;
 
   static init() async {
+    
     basketbox = await Hive.openBox("basketbox");
-    Hive.registerAdapter(BasketmodelAdapter());
+    await Hiveservice.basketbox.clear();
+    
   }
 
   static addtobasket(key, value) async {
