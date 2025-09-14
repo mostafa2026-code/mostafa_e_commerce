@@ -6,6 +6,7 @@ import 'package:mostafa_e_commerce/core/hiveservice/Hiveservice.dart';
 import 'package:mostafa_e_commerce/features/home/homescreen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hiveservice.init();
   runApp(const MainApp());

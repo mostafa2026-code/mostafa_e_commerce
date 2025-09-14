@@ -43,7 +43,7 @@ class _BasketscreenState extends State<Basketscreen> {
             child: ValueListenableBuilder(
               valueListenable: Hiveservice.basketbox.listenable(),
               builder: (context, basketboxvalue, child) {
-                List basketlist = basketboxvalue.values.toList();
+                List<dynamic> basketlist = basketboxvalue.values.toList();
                 return ListView.separated(
                   scrollDirection: Axis.vertical,
                   itemCount: basketboxvalue.length,

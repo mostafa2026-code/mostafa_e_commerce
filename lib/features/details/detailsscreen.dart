@@ -192,9 +192,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
                               double totalPrice =
                                   number.toDouble() *
                                   widget.productdetails.price;
-                              String id =
-                                  widget.productdetails.imageUrl +
-                                  widget.productdetails.name;
+                              String id = DateTime.now().millisecondsSinceEpoch.toString();
                               await Hiveservice.addtobasket(
                                 id,
                                 Basketmodel(
@@ -206,14 +204,11 @@ class _DetailsscreenState extends State<Detailsscreen> {
                                 ),
                               );
                               Navigator.push(
-                                
                                 // ignore: use_build_context_synchronously
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return Basketscreen(
-                                      
-                                    );
+                                    return Basketscreen();
                                   },
                                 ),
                               );
